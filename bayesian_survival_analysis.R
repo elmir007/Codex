@@ -67,10 +67,10 @@ lung$event <- ifelse(lung$status == 2, 1, 0)
 lung$age_z <- scale(lung$age)
 
 fit <- stan_surv(
-  formula = Surv(time, event) ~ age_z + sex,
+  formula = Surv(time, status == 2) ~ age_z + sex,
   data = lung,
-  basehaz = "exp-bs",   # Exponential baseline hazard with B-splines
-  prior = prior_student,
+  basehaz = "bs",  # B-spline baseline hazard
+  prior = normal(0, 2.5),
   chains = 4,
   iter = 2000,
   seed = 1234
